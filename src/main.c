@@ -6,6 +6,9 @@ static Window *s_main_window;
 static TextLayer *s_output_layer;
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
+  text_layer_set_text(s_output_layer, "inbox_received_callback");
+
+
   // Get the first pair
   Tuple *t = dict_read_first(iterator);
 
@@ -16,11 +19,13 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 
     // Process this pair's key
     switch (t->key) {
-      case KEY_DATA:
+      case KEY_DATA:{
         // Copy value and display
-        snprintf(s_buffer, sizeof(s_buffer), "Received '%s'", t->value->cstring);
+        int key = (int) t->key;
+        snprintf(s_buffer, sizeof(s_buffer), "Received '%d' : '%s'", key, t->value->cstring);
         text_layer_set_text(s_output_layer, s_buffer);
         break;
+    }
     }
 
     // Get next pair, if any
@@ -29,6 +34,9 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
+  text_layer_set_text(s_output_layer, "Message dropped!");
+
+
   APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
 }
 
