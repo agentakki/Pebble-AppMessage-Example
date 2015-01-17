@@ -1,0 +1,19 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "lowellbander@gmail.com",
+    "longName": "AppMessage Example",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "shortName": "AppMessage Example",
+    "uuid": "36519cda-0474-4324-a6b9-a44a5d052995",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
