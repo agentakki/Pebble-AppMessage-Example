@@ -31,6 +31,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     // Get next pair, if any
     t = dict_read_next(iterator);
   }
+  
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
@@ -42,10 +43,12 @@ static void inbox_dropped_callback(AppMessageResult reason, void *context) {
 
 static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
   APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+  text_layer_set_text(s_output_layer, "failed :(");
 }
 
 static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
   APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
+  text_layer_set_text(s_output_layer, "Message sent!");
 }
 
 static void main_window_load(Window *window) {
@@ -55,7 +58,7 @@ static void main_window_load(Window *window) {
   // Create output TextLayer
   s_output_layer = text_layer_create(GRect(5, 0, window_bounds.size.w - 5, window_bounds.size.h));
   text_layer_set_font(s_output_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
-  text_layer_set_text(s_output_layer, "Waiting...");
+  text_layer_set_text(s_output_layer, "Waiting for response from RockTomato ...");
   text_layer_set_overflow_mode(s_output_layer, GTextOverflowModeWordWrap);
   layer_add_child(window_layer, text_layer_get_layer(s_output_layer));
 }
@@ -63,6 +66,27 @@ static void main_window_load(Window *window) {
 static void main_window_unload(Window *window) {
   // Destroy output TextLayer
   text_layer_destroy(s_output_layer);
+}
+
+void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
+  //Window *window = (Window *)context;
+  text_layer_set_text(s_output_layer, "Begin transmission!");
+  
+  DictionaryIterator *iter;
+  
+  app_message_outbox_begin(&iter);
+  if (iter == NULL) return;
+  
+  dict_write_cstring(iter, 42, "Hi Akshay!");
+  dict_write_end(iter);
+  
+  app_message_outbox_send();
+  
+}
+
+void config_provider(Window *window) {
+    window_single_click_subscribe(BUTTON_ID_DOWN, down_single_click_handler);
+  
 }
 
 static void init() {
@@ -81,6 +105,9 @@ static void init() {
     .load = main_window_load,
     .unload = main_window_unload
   });
+  
+  window_set_click_config_provider(s_main_window, (ClickConfigProvider) config_provider);
+  
   window_stack_push(s_main_window, true);
 }
 
