@@ -23,7 +23,7 @@ static void main_window_unload(Window *window) {
 }
 
 void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-  pomo_completed();
+  pomo_completed(42);
 }
 
 void up_single_click_handler(ClickRecognizerRef recognizer, void *context) {

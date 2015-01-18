@@ -1,7 +1,17 @@
 #pragma once
-#define KEY_DATA 5
+#define KEY_DATA 5 // DELETE ME
+  
+#define LIST_RESPONSE "LIST_RESPONSE"
+#define TASK "TASK"
+  
+#define POMO_COMPLETE "POMO_COMPLETE"
+#define LIST_REQUEST "LIST_REQUEST"
 
-void pomo_completed();
+/*
+  When called, signals the iOS app that a pomo 
+  has been completed for the task with id t_id
+*/
+void pomo_completed(int t_id);
 
 void list_request();
 

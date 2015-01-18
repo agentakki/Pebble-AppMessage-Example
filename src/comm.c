@@ -2,17 +2,15 @@
 #include "comm.h"
 #include "globals.h"
 
-void pomo_completed() {
+void pomo_completed(int t_id) {
   // send sample data
   
   text_layer_set_text(s_output_layer, "Sending pomo to iOS app ..."); // optional
   
-  int t_id = 42;
-  
   DictionaryIterator *iter;
   app_message_outbox_begin(&iter);
   if (iter == NULL) return;
-  dict_write_cstring(iter, 0, "POMO_COMPLETE");
+  dict_write_cstring(iter, 0, POMO_COMPLETE);
   dict_write_int(iter, 1, &t_id, sizeof(int), false);
   dict_write_end(iter);
   app_message_outbox_send();
@@ -26,7 +24,7 @@ void list_request() {
   DictionaryIterator *iter;
   app_message_outbox_begin(&iter);
   if (iter == NULL) return;
-  dict_write_cstring(iter, 0, "LIST_REQUEST");
+  dict_write_cstring(iter, 0, LIST_REQUEST);
   dict_write_end(iter);
   app_message_outbox_send();
   
@@ -35,10 +33,24 @@ void list_request() {
 void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   text_layer_set_text(s_output_layer, "inbox_received_callback");
 
-
   // Get the first pair
   Tuple *t = dict_read_first(iterator);
-
+  
+  int nUnreceivedTasks = 0;
+  
+  if (strcmp(t->value->cstring, LIST_RESPONSE)) {
+    text_layer_set_text(s_output_layer, "received LIST_RESPONSE"); 
+  }
+  else if (strcmp(t->value->cstring, TASK)) {
+    text_layer_set_text(s_output_layer, "received TASK"); 
+  }
+  else {
+    text_layer_set_text(s_output_layer, "received unkown response from iOS app"); 
+  }
+  
+  
+  return;
+  
   // Process all pairs present
   while (t != NULL) {
     // Long lived buffer
