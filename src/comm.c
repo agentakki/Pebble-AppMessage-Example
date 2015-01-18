@@ -38,10 +38,10 @@ void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   
   int nUnreceivedTasks = 0;
   
-  if (strcmp(t->value->cstring, LIST_RESPONSE)) {
+  if (!strcmp(t->value->cstring, LIST_RESPONSE)) {
     text_layer_set_text(s_output_layer, "received LIST_RESPONSE"); 
   }
-  else if (strcmp(t->value->cstring, TASK)) {
+  else if (!strcmp(t->value->cstring, TASK)) {
     text_layer_set_text(s_output_layer, "received TASK"); 
   }
   else {
