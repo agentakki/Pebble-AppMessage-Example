@@ -4,6 +4,19 @@
 
 void pomo_completed() {
   // send sample data
+  
+  text_layer_set_text(s_output_layer, "Sending pomo to iOS app ..."); // optional
+  
+  int t_id = 42;
+  
+  DictionaryIterator *iter;
+  app_message_outbox_begin(&iter);
+  if (iter == NULL) return;
+  dict_write_cstring(iter, 0, "POMO_COMPLETE");
+  dict_write_int(iter, 1, &t_id, sizeof(int), false);
+  dict_write_end(iter);
+  app_message_outbox_send();
+  
 }
 
 void inbox_received_callback(DictionaryIterator *iterator, void *context) {
