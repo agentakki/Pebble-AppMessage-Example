@@ -3,7 +3,7 @@
 #include "globals.h"
 
 void pomo_completed() {
-  // need to access
+  // send sample data
 }
 
 void inbox_received_callback(DictionaryIterator *iterator, void *context) {
@@ -52,26 +52,6 @@ void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
   text_layer_set_text(s_output_layer, "Message sent!");
 }
 
-void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-  //Window *window = (Window *)context;
-  text_layer_set_text(s_output_layer, "Begin transmission!");
-  
-  DictionaryIterator *iter;
-  
-  app_message_outbox_begin(&iter);
-  if (iter == NULL) return;
-  
-  dict_write_cstring(iter, 42, "Hi Akshay!");
-  dict_write_end(iter);
-  
-  app_message_outbox_send();
-  
-}
-
-void config_provider(Window *window) {
-    window_single_click_subscribe(BUTTON_ID_DOWN, down_single_click_handler);
-}
-
 void init_comm() {
    // Register callbacks
   app_message_register_inbox_received(inbox_received_callback);
@@ -81,8 +61,6 @@ void init_comm() {
 
   // Open AppMessage
   app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
-
-  window_set_click_config_provider(s_main_window, (ClickConfigProvider) config_provider);
 }
 
 void main_window_unload(Window *window) {

@@ -11,8 +11,4 @@ void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reaso
 
 void outbox_sent_callback(DictionaryIterator *iterator, void *context);
 
-void down_single_click_handler(ClickRecognizerRef recognizer, void *context);
-
-void config_provider(Window *window);
-
 void init_comm();

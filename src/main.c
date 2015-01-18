@@ -22,6 +22,25 @@ static void main_window_unload(Window *window) {
   text_layer_destroy(s_output_layer);
 }
 
+void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
+  text_layer_set_text(s_output_layer, "Begin transmission!");
+  
+  DictionaryIterator *iter;
+  
+  app_message_outbox_begin(&iter);
+  if (iter == NULL) return;
+  
+  dict_write_cstring(iter, 42, "Hi Akshay!");
+  dict_write_end(iter);
+  
+  app_message_outbox_send();
+  
+}
+
+void config_provider(Window *window) {
+    window_single_click_subscribe(BUTTON_ID_DOWN, down_single_click_handler);
+}
+
 static void init() {
   // Create main Window
   s_main_window = window_create();
@@ -32,6 +51,8 @@ static void init() {
   
   window_stack_push(s_main_window, true);
   
+  window_set_click_config_provider(s_main_window, (ClickConfigProvider) config_provider);
+
   // init comm
   init_comm();
   
