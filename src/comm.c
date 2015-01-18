@@ -19,6 +19,19 @@ void pomo_completed() {
   
 }
 
+void list_request() {
+  
+  text_layer_set_text(s_output_layer, "Sending list request to iOS app ..."); // optional
+  
+  DictionaryIterator *iter;
+  app_message_outbox_begin(&iter);
+  if (iter == NULL) return;
+  dict_write_cstring(iter, 0, "LIST_REQUEST");
+  dict_write_end(iter);
+  app_message_outbox_send();
+  
+}
+
 void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   text_layer_set_text(s_output_layer, "inbox_received_callback");
 

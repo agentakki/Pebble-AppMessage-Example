@@ -23,25 +23,16 @@ static void main_window_unload(Window *window) {
 }
 
 void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-  
   pomo_completed();
-  
-//   text_layer_set_text(s_output_layer, "Begin transmission!");
-  
-//   DictionaryIterator *iter;
-  
-//   app_message_outbox_begin(&iter);
-//   if (iter == NULL) return;
-  
-//   dict_write_cstring(iter, 42, "Hi Akshay!");
-//   dict_write_end(iter);
-  
-//   app_message_outbox_send();
-  
+}
+
+void up_single_click_handler(ClickRecognizerRef recognizer, void *context) {
+  list_request();
 }
 
 void config_provider(Window *window) {
     window_single_click_subscribe(BUTTON_ID_DOWN, down_single_click_handler);
+    window_single_click_subscribe(BUTTON_ID_UP, up_single_click_handler);
 }
 
 static void init() {

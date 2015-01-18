@@ -3,6 +3,8 @@
 
 void pomo_completed();
 
+void list_request();
+
 void inbox_received_callback(DictionaryIterator *iterator, void *context);
 
 void inbox_dropped_callback(AppMessageResult reason, void *context);
