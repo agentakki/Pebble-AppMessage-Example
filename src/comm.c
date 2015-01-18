@@ -6,7 +6,7 @@ void pomo_completed() {
   // need to access
 }
 
-static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
+void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   text_layer_set_text(s_output_layer, "inbox_received_callback");
 
 
@@ -35,19 +35,19 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   
 }
 
-static void inbox_dropped_callback(AppMessageResult reason, void *context) {
+void inbox_dropped_callback(AppMessageResult reason, void *context) {
   text_layer_set_text(s_output_layer, "Message dropped!");
 
 
   APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
 }
 
-static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
+void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
   APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
   text_layer_set_text(s_output_layer, "failed :(");
 }
 
-static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
+void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
   APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
   text_layer_set_text(s_output_layer, "Message sent!");
 }
